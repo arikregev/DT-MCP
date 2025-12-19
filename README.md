@@ -78,6 +78,29 @@ docker tag dt-mcp-server:latest yourusername/dt-mcp-server:latest
 docker push yourusername/dt-mcp-server:latest
 ```
 
+## CI/CD
+
+This project includes a GitHub Actions workflow (`.github/workflows/build-and-publish.yml`) that automatically:
+
+- Builds the Maven project on every push and pull request
+- Builds Docker images for multiple platforms (linux/amd64, linux/arm64)
+- Optionally publishes to Docker Hub when:
+  - Pushing to `main` or `master` branch
+  - Creating a version tag (e.g., `v1.0.0`)
+  - Manually triggering the workflow
+
+### Setting up Docker Hub Publishing (Optional)
+
+To enable automatic Docker Hub publishing:
+
+1. Go to your GitHub repository settings
+2. Navigate to **Secrets and variables** → **Actions**
+3. Add the following secrets:
+   - `DOCKERHUB_USERNAME`: Your Docker Hub username
+   - `DOCKERHUB_TOKEN`: Your Docker Hub access token (create one at https://hub.docker.com/settings/security)
+
+If these secrets are not configured, the workflow will still build the Docker image but skip the push step.
+
 ## Available Tools
 
 ### Read Operations
