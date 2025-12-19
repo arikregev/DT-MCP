@@ -91,6 +91,7 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push Docker image
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -103,5 +104,12 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
       - name: Image digest
-        run: echo "Image digest: ${{ steps.meta.outputs.digest }}"
+        if: always()
+        run: |
+          DIGEST="${{ steps.build.outputs.digest }}"
+          if [ -n "$DIGEST" ]; then
+            echo "Image digest: $DIGEST"
+          else
+            echo "Image digest: N/A (image not pushed)"
+          fi
 
